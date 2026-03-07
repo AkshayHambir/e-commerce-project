@@ -2,7 +2,9 @@ package com.springbootlearning.ecommerceapp.service.impl;
 
 import com.springbootlearning.ecommerceapp.models.Category;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,5 +31,15 @@ public class CategoryServiceImpl implements CategoryService {
         }
         categories.add(category);
         return categories.get(categories.size() - 1);
+    }
+
+    @Override
+    public String deleteCategory(Long categoryId) {
+        List<Category> categories1 = categories.stream().filter(c -> c.getCategoryId().equals(categoryId)).toList();
+        if(categories1.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");
+        }
+        categories.remove(categories1.get(0));
+        return "Category with id : " + categoryId + " deleted successfully";
     }
 }
