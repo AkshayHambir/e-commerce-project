@@ -35,25 +35,25 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String updateCategory(Long categoryId, Category updatedCategory) {
-        List<Category> categories1 = categories.stream().filter(c -> c.getCategoryId().equals(categoryId)).toList();
-        if(categories1.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");
-        }
-        categories = categories.stream().peek(c ->{
-            if(c.getCategoryId().equals(categoryId)){
-                c.setCategoryName(updatedCategory.getCategoryName());
-            }
-        }).toList();
+        Category category = categories.stream()
+                .filter(c -> c.getCategoryId().equals(categoryId))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+
+        category.setCategoryName(updatedCategory.getCategoryName());
+
         return "Category with id: " + categoryId + " updated successfully";
     }
 
     @Override
     public String deleteCategory(Long categoryId) {
-        List<Category> categories1 = categories.stream().filter(c -> c.getCategoryId().equals(categoryId)).toList();
-        if(categories1.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");
-        }
-        categories.remove(categories1.get(0));
+        Category category = categories.stream()
+                .filter(c -> c.getCategoryId().equals(categoryId))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+
+        categories.remove(category);
+
         return "Category with id : " + categoryId + " deleted successfully";
     }
 }
