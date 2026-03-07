@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -18,6 +19,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
+        if(Objects.isNull(category.getCategoryId())) {
+            if (categories.isEmpty()) {
+                category.setCategoryId(1L);
+            } else {
+                Long lastId = categories.get(categories.size() - 1).getCategoryId();
+                category.setCategoryId(lastId + 1);
+            }
+        }
         categories.add(category);
         return categories.get(categories.size() - 1);
     }
