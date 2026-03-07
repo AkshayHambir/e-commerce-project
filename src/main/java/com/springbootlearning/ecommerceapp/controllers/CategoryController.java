@@ -31,6 +31,20 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
 
+    @PutMapping("/api/admin/categories/{categoryId}")
+    public ResponseEntity<String> updateCategory(
+            @PathVariable Long categoryId,
+            @RequestBody Category category
+    )
+    {
+       try {
+           String status = categoryService.updateCategory(categoryId, category);
+           return ResponseEntity.ok(status);
+       } catch (ResponseStatusException e){
+           return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+       }
+    }
+
     @DeleteMapping("/api/admin/categories/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId)
     {
