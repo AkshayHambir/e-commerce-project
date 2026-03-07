@@ -1,6 +1,7 @@
 package com.springbootlearning.ecommerceapp.controllers;
 
 import com.springbootlearning.ecommerceapp.models.Category;
+import com.springbootlearning.ecommerceapp.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,18 +12,21 @@ import java.util.List;
 
 @RestController
 public class CategoryController {
-    private ArrayList<Category> categories = new ArrayList<>();
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("/api/public/categories")
     public List<Category> getCategories()
     {
-        return categories;
+        return categoryService.getCategories();
     }
 
     @PostMapping("/api/admin/categories")
     public Category createCategory(@RequestBody Category category)
     {
-        categories.add(category);
-        return categories.get(categories.size() - 1);
+        return categoryService.createCategory(category);
     }
 }
