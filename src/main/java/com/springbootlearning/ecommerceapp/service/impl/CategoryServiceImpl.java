@@ -1,5 +1,6 @@
 package com.springbootlearning.ecommerceapp.service.impl;
 
+import com.springbootlearning.ecommerceapp.exceptions.ResourceNotFoundException;
 import com.springbootlearning.ecommerceapp.models.Category;
 import com.springbootlearning.ecommerceapp.repositories.CategoryRepository;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
@@ -31,11 +32,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String updateCategory(Long categoryId, Category updatedCategory) {
-        List<Category> categories = categoryRepository.findAll();
-        Category category = categories.stream()
-                .filter(c -> c.getCategoryId().equals(categoryId))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+        Category category = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
         category.setCategoryName(updatedCategory.getCategoryName());
         categoryRepository.save(category);
@@ -46,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public String deleteCategory(Long categoryId) {
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
-        Category category = categoryOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+        Category category = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
         categoryRepository.delete(category);
 
         return "Category with id : " + categoryId + " deleted successfully";
