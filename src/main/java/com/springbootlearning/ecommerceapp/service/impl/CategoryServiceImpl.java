@@ -1,5 +1,6 @@
 package com.springbootlearning.ecommerceapp.service.impl;
 
+import com.springbootlearning.ecommerceapp.exceptions.APIException;
 import com.springbootlearning.ecommerceapp.exceptions.ResourceNotFoundException;
 import com.springbootlearning.ecommerceapp.models.Category;
 import com.springbootlearning.ecommerceapp.repositories.CategoryRepository;
@@ -27,11 +28,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
+        if(categoryRepository.existsByCategoryName(category.getCategoryName())){
+            throw new APIException("Category with given name already exists.");
+        }
             return categoryRepository.save(category);
     }
 
     @Override
     public String updateCategory(Long categoryId, Category updatedCategory) {
+        Category existingCategory = categoryRepository.findByCategoryName(updatedCategory.getCategoryName());
+        if(Objects.nonNull(existingCategory) && !existingCategory.getCategoryId().equals(categoryId)){
+            throw new APIException("Category with given name already exists");
+        }
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
         Category category = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
