@@ -35,26 +35,24 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String updateCategory(Long categoryId, Category updatedCategory) {
+    public Category updateCategory(Long categoryId, Category updatedCategory) {
         Category existingCategory = categoryRepository.findByCategoryName(updatedCategory.getCategoryName());
+
+        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+        Category category = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+
         if(Objects.nonNull(existingCategory) && !existingCategory.getCategoryId().equals(categoryId)){
             throw new APIException("Category with given name already exists");
         }
-        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
-        Category category = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
         category.setCategoryName(updatedCategory.getCategoryName());
-        categoryRepository.save(category);
-
-        return "Category with id: " + categoryId + " updated successfully";
+        return categoryRepository.save(category);
     }
 
     @Override
-    public String deleteCategory(Long categoryId) {
+    public void deleteCategory(Long categoryId) {
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
         Category category = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
         categoryRepository.delete(category);
-
-        return "Category with id : " + categoryId + " deleted successfully";
     }
 }
