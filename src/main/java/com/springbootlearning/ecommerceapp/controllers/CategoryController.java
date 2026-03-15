@@ -2,6 +2,7 @@ package com.springbootlearning.ecommerceapp.controllers;
 
 import com.springbootlearning.ecommerceapp.models.Category;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/categories")
-    public ResponseEntity<Category> createCategory(@RequestBody Category category)
+    public ResponseEntity<Category> createCategory(@RequestBody @Valid Category category)
     {
         Category savedCategory = categoryService.createCategory(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
@@ -34,7 +35,7 @@ public class CategoryController {
     @PutMapping("/admin/categories/{categoryId}")
     public ResponseEntity<String> updateCategory(
             @PathVariable Long categoryId,
-            @RequestBody Category category
+            @RequestBody @Valid Category category
     )
     {
        try {
