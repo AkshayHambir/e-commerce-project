@@ -3,6 +3,7 @@ package com.springbootlearning.ecommerceapp.controllers;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryInDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryUpdateDTO;
+import com.springbootlearning.ecommerceapp.dto.response.PaginatedResponse;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
 import jakarta.validation.Valid;
@@ -22,9 +23,12 @@ public class CategoryController {
     }
 
     @GetMapping("/public/categories")
-    public ResponseEntity<List<CategoryOutDTO>> getCategories()
+    public ResponseEntity<PaginatedResponse<CategoryOutDTO>> getCategories(
+            @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize
+    )
     {
-        return ResponseEntity.ok(categoryService.getCategories());
+        return ResponseEntity.ok(categoryService.getCategories(pageNumber, pageSize));
     }
 
     @PostMapping("/admin/categories")

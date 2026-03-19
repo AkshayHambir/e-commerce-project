@@ -3,12 +3,13 @@ package com.springbootlearning.ecommerceapp.service;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryInDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryUpdateDTO;
+import com.springbootlearning.ecommerceapp.dto.response.PaginatedResponse;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryOutDTO> getCategories();
+    PaginatedResponse<CategoryOutDTO> getCategories(Integer pageNumber, Integer pageSize);
 
     CategoryOutDTO createCategory(CategoryInDTO categoryInDTO);
 
