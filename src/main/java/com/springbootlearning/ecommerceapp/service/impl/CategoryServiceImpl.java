@@ -1,8 +1,10 @@
 package com.springbootlearning.ecommerceapp.service.impl;
 
+import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
 import com.springbootlearning.ecommerceapp.exceptions.APIException;
 import com.springbootlearning.ecommerceapp.exceptions.ResourceNotFoundException;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
+import com.springbootlearning.ecommerceapp.mapper.CategoryMapper;
 import com.springbootlearning.ecommerceapp.repositories.CategoryRepository;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CategoryMapper categoryMapper;
+
     @Override
-    public List<CategoryEntity> getCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryOutDTO> getCategories() {
+        List<CategoryEntity> categoryEntities = categoryRepository.findAll();
+
+        return categoryEntities.stream().map(categoryEntity -> categoryMapper.categoryEntityToCategoryOutDTO(categoryEntity)).toList();
     }
 
     @Override

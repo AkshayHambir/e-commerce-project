@@ -1,5 +1,6 @@
 package com.springbootlearning.ecommerceapp.controllers;
 
+import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class CategoryController {
     }
 
     @GetMapping("/public/categories")
-    public ResponseEntity<List<CategoryEntity>> getCategories()
+    public ResponseEntity<List<CategoryOutDTO>> getCategories()
     {
         return ResponseEntity.ok(categoryService.getCategories());
     }
