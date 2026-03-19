@@ -2,6 +2,7 @@ package com.springbootlearning.ecommerceapp.controllers;
 
 import com.springbootlearning.ecommerceapp.dto.category.CategoryInDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
+import com.springbootlearning.ecommerceapp.dto.category.CategoryUpdateDTO;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
 import jakarta.validation.Valid;
@@ -34,13 +35,13 @@ public class CategoryController {
     }
 
     @PutMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<CategoryEntity> updateCategory(
+    public ResponseEntity<CategoryOutDTO> updateCategory(
             @PathVariable Long categoryId,
-            @RequestBody @Valid CategoryEntity categoryEntity
+            @RequestBody @Valid CategoryUpdateDTO categoryUpdateDTO
     )
     {
-        CategoryEntity updatedCategoryEntity = categoryService.updateCategory(categoryId, categoryEntity);
-       return new ResponseEntity<>(updatedCategoryEntity, HttpStatus.OK);
+        CategoryOutDTO updatedCategory = categoryService.updateCategory(categoryId, categoryUpdateDTO);
+       return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")

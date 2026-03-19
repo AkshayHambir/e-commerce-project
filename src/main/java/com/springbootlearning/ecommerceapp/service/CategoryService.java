@@ -2,6 +2,7 @@ package com.springbootlearning.ecommerceapp.service;
 
 import com.springbootlearning.ecommerceapp.dto.category.CategoryInDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
+import com.springbootlearning.ecommerceapp.dto.category.CategoryUpdateDTO;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface CategoryService {
 
     CategoryOutDTO createCategory(CategoryInDTO categoryInDTO);
 
-    CategoryEntity updateCategory(Long categoryId, CategoryEntity updatedCategoryEntity);
+    CategoryOutDTO updateCategory(Long categoryId, CategoryUpdateDTO categoryUpdateDTO);
 
     void deleteCategory(Long categoryId);
 }

@@ -2,6 +2,7 @@ package com.springbootlearning.ecommerceapp.service.impl;
 
 import com.springbootlearning.ecommerceapp.dto.category.CategoryInDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
+import com.springbootlearning.ecommerceapp.dto.category.CategoryUpdateDTO;
 import com.springbootlearning.ecommerceapp.exceptions.APIException;
 import com.springbootlearning.ecommerceapp.exceptions.ResourceNotFoundException;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
@@ -44,8 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryEntity updateCategory(Long categoryId, CategoryEntity updatedCategoryEntity) {
-        CategoryEntity existingCategoryEntity = categoryRepository.findByCategoryName(updatedCategoryEntity.getCategoryName());
+    public CategoryOutDTO updateCategory(Long categoryId, CategoryUpdateDTO categoryUpdateDTO) {
+        CategoryEntity existingCategoryEntity = categoryRepository.findByCategoryName(categoryUpdateDTO.getCategoryName());
 
         Optional<CategoryEntity> categoryOptional = categoryRepository.findById(categoryId);
         CategoryEntity categoryEntity = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
@@ -54,8 +55,8 @@ public class CategoryServiceImpl implements CategoryService {
             throw new APIException("Category with given name already exists");
         }
 
-        categoryEntity.setCategoryName(updatedCategoryEntity.getCategoryName());
-        return categoryRepository.save(categoryEntity);
+        categoryMapper.categoryUpdateDTOToCategoryEntity(categoryUpdateDTO, categoryEntity);
+        return categoryMapper.categoryEntityToCategoryOutDTO(categoryEntity);
     }
 
     @Override
