@@ -1,5 +1,6 @@
 package com.springbootlearning.ecommerceapp.service.impl;
 
+import com.springbootlearning.ecommerceapp.dto.category.CategoryInDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
 import com.springbootlearning.ecommerceapp.exceptions.APIException;
 import com.springbootlearning.ecommerceapp.exceptions.ResourceNotFoundException;
@@ -31,11 +32,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryEntity createCategory(CategoryEntity categoryEntity) {
-        if(categoryRepository.existsByCategoryName(categoryEntity.getCategoryName())){
+    public CategoryOutDTO createCategory(CategoryInDTO categoryInDTO) {
+        if(categoryRepository.existsByCategoryName(categoryInDTO.getCategoryName())){
             throw new APIException("Category with given name already exists.");
         }
-            return categoryRepository.save(categoryEntity);
+
+        CategoryEntity categoryEntity = categoryMapper.categoryInDTOToCategoryEntity(categoryInDTO);
+        CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
+
+        return categoryMapper.categoryEntityToCategoryOutDTO(savedCategory);
     }
 
     @Override

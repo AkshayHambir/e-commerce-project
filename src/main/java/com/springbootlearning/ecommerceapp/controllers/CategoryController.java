@@ -1,5 +1,6 @@
 package com.springbootlearning.ecommerceapp.controllers;
 
+import com.springbootlearning.ecommerceapp.dto.category.CategoryInDTO;
 import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
@@ -26,10 +27,10 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/categories")
-    public ResponseEntity<CategoryEntity> createCategory(@RequestBody @Valid CategoryEntity categoryEntity)
+    public ResponseEntity<CategoryOutDTO> createCategory(@RequestBody @Valid CategoryInDTO categoryInDTO)
     {
-        CategoryEntity savedCategoryEntity = categoryService.createCategory(categoryEntity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategoryEntity);
+        CategoryOutDTO savedCategory = categoryService.createCategory(categoryInDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
 
     @PutMapping("/admin/categories/{categoryId}")
