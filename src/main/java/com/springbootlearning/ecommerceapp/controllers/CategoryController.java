@@ -25,10 +25,12 @@ public class CategoryController {
     @GetMapping("/public/categories")
     public ResponseEntity<PaginatedResponse<CategoryOutDTO>> getCategories(
             @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "categoryId") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String order
     )
     {
-        return ResponseEntity.ok(categoryService.getCategories(pageNumber, pageSize));
+        return ResponseEntity.ok(categoryService.getCategories(pageNumber, pageSize, sortBy, order));
     }
 
     @PostMapping("/admin/categories")

@@ -9,7 +9,7 @@ import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import java.util.List;
 
 public interface CategoryService {
-    PaginatedResponse<CategoryOutDTO> getCategories(Integer pageNumber, Integer pageSize);
+    PaginatedResponse<CategoryOutDTO> getCategories(Integer pageNumber, Integer pageSize, String sortBy, String order);
 
     CategoryOutDTO createCategory(CategoryInDTO categoryInDTO);
 
