@@ -1,12 +1,11 @@
 package com.springbootlearning.ecommerceapp.controllers;
 
-import com.springbootlearning.ecommerceapp.models.Category;
+import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,26 +19,26 @@ public class CategoryController {
     }
 
     @GetMapping("/public/categories")
-    public ResponseEntity<List<Category>> getCategories()
+    public ResponseEntity<List<CategoryEntity>> getCategories()
     {
         return ResponseEntity.ok(categoryService.getCategories());
     }
 
     @PostMapping("/admin/categories")
-    public ResponseEntity<Category> createCategory(@RequestBody @Valid Category category)
+    public ResponseEntity<CategoryEntity> createCategory(@RequestBody @Valid CategoryEntity categoryEntity)
     {
-        Category savedCategory = categoryService.createCategory(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
+        CategoryEntity savedCategoryEntity = categoryService.createCategory(categoryEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategoryEntity);
     }
 
     @PutMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<Category> updateCategory(
+    public ResponseEntity<CategoryEntity> updateCategory(
             @PathVariable Long categoryId,
-            @RequestBody @Valid Category category
+            @RequestBody @Valid CategoryEntity categoryEntity
     )
     {
-        Category updatedCategory = categoryService.updateCategory(categoryId, category);
-       return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+        CategoryEntity updatedCategoryEntity = categoryService.updateCategory(categoryId, categoryEntity);
+       return new ResponseEntity<>(updatedCategoryEntity, HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")

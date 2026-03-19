@@ -2,15 +2,12 @@ package com.springbootlearning.ecommerceapp.service.impl;
 
 import com.springbootlearning.ecommerceapp.exceptions.APIException;
 import com.springbootlearning.ecommerceapp.exceptions.ResourceNotFoundException;
-import com.springbootlearning.ecommerceapp.models.Category;
+import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import com.springbootlearning.ecommerceapp.repositories.CategoryRepository;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,37 +19,37 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getCategories() {
+    public List<CategoryEntity> getCategories() {
         return categoryRepository.findAll();
     }
 
     @Override
-    public Category createCategory(Category category) {
-        if(categoryRepository.existsByCategoryName(category.getCategoryName())){
+    public CategoryEntity createCategory(CategoryEntity categoryEntity) {
+        if(categoryRepository.existsByCategoryName(categoryEntity.getCategoryName())){
             throw new APIException("Category with given name already exists.");
         }
-            return categoryRepository.save(category);
+            return categoryRepository.save(categoryEntity);
     }
 
     @Override
-    public Category updateCategory(Long categoryId, Category updatedCategory) {
-        Category existingCategory = categoryRepository.findByCategoryName(updatedCategory.getCategoryName());
+    public CategoryEntity updateCategory(Long categoryId, CategoryEntity updatedCategoryEntity) {
+        CategoryEntity existingCategoryEntity = categoryRepository.findByCategoryName(updatedCategoryEntity.getCategoryName());
 
-        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
-        Category category = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+        Optional<CategoryEntity> categoryOptional = categoryRepository.findById(categoryId);
+        CategoryEntity categoryEntity = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
-        if(Objects.nonNull(existingCategory) && !existingCategory.getCategoryId().equals(categoryId)){
+        if(Objects.nonNull(existingCategoryEntity) && !existingCategoryEntity.getCategoryId().equals(categoryId)){
             throw new APIException("Category with given name already exists");
         }
 
-        category.setCategoryName(updatedCategory.getCategoryName());
-        return categoryRepository.save(category);
+        categoryEntity.setCategoryName(updatedCategoryEntity.getCategoryName());
+        return categoryRepository.save(categoryEntity);
     }
 
     @Override
     public void deleteCategory(Long categoryId) {
-        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
-        Category category = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
-        categoryRepository.delete(category);
+        Optional<CategoryEntity> categoryOptional = categoryRepository.findById(categoryId);
+        CategoryEntity categoryEntity = categoryOptional.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+        categoryRepository.delete(categoryEntity);
     }
 }

@@ -1,15 +1,15 @@
 package com.springbootlearning.ecommerceapp.service;
 
-import com.springbootlearning.ecommerceapp.models.Category;
+import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> getCategories();
+    List<CategoryEntity> getCategories();
 
-    Category createCategory(Category category);
+    CategoryEntity createCategory(CategoryEntity categoryEntity);
 
-    Category updateCategory(Long categoryId, Category updatedCategory);
+    CategoryEntity updateCategory(Long categoryId, CategoryEntity updatedCategoryEntity);
 
     void deleteCategory(Long categoryId);
 }
