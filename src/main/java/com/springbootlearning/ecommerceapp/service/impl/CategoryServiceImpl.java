@@ -8,7 +8,7 @@ import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import com.springbootlearning.ecommerceapp.exceptions.APIException;
 import com.springbootlearning.ecommerceapp.mapper.CategoryMapper;
 import com.springbootlearning.ecommerceapp.repositories.CategoryRepository;
-import com.springbootlearning.ecommerceapp.repositories.decorators.CategoryDecorator;
+import com.springbootlearning.ecommerceapp.repositories.decorators.CategoryRepositoryDecorator;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
 
-    private final CategoryDecorator categoryDecorator;
+    private final CategoryRepositoryDecorator categoryRepositoryDecorator;
 
     @Override
     public PaginatedResponse<CategoryOutDTO> getCategories(Integer pageNumber, Integer pageSize, String sortBy, String order) {
@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryOutDTO updateCategory(Long categoryId, CategoryUpdateDTO categoryUpdateDTO) {
         CategoryEntity existingCategoryEntity = categoryRepository.findByCategoryName(categoryUpdateDTO.getCategoryName());
 
-        CategoryEntity categoryEntity = categoryDecorator.getByIdPrimary(categoryId);
+        CategoryEntity categoryEntity = categoryRepositoryDecorator.getByIdPrimary(categoryId);
 
         if (Objects.nonNull(existingCategoryEntity) && !existingCategoryEntity.getCategoryId().equals(categoryId)) {
             throw new APIException("Category with given name already exists");
@@ -69,7 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long categoryId) {
-        CategoryEntity categoryEntity = categoryDecorator.getByIdPrimary(categoryId);
+        CategoryEntity categoryEntity = categoryRepositoryDecorator.getByIdPrimary(categoryId);
         categoryRepository.delete(categoryEntity);
     }
 }

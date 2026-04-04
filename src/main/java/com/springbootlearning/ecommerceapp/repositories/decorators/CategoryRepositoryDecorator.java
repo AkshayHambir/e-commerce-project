@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CategoryDecorator {
+public class CategoryRepositoryDecorator {
 
     private final CategoryRepository categoryRepository;
 
