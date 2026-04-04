@@ -28,7 +28,7 @@ public class ProductController {
     }
 
     @GetMapping("/public/products")
-    public ResponseEntity<PaginatedResponse<ProductOutDTO>> getCategories(
+    public ResponseEntity<PaginatedResponse<ProductOutDTO>> getProducts(
             @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
             @RequestParam(required = false, defaultValue = "productId") String sortBy,
@@ -38,4 +38,15 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProducts(pageNumber, pageSize, sortBy, order));
     }
 
+    @GetMapping("/public/categories/{categoryId}/products")
+    public ResponseEntity<PaginatedResponse<ProductOutDTO>> getProductsByCategory(
+            @PathVariable Long categoryId,
+            @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "productId") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String order
+    )
+    {
+        return ResponseEntity.ok(productService.getProductsByCategory(categoryId, pageNumber, pageSize, sortBy, order));
+    }
 }

@@ -8,4 +8,6 @@ public interface ProductService {
     ProductOutDTO saveProduct(Long categoryId, ProductInDTO productInDTO);
 
     PaginatedResponse<ProductOutDTO> getProducts(Integer pageNumber, Integer pageSize, String sortBy, String order);
+
+    PaginatedResponse<ProductOutDTO> getProductsByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String order);
 }

@@ -59,4 +59,17 @@ public class ProductServiceImpl implements ProductService {
 
         return productMapper.toPaginatedResponse(productEntityPage, productOutDTOs);
     }
+
+    @Override
+    public PaginatedResponse<ProductOutDTO> getProductsByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String order) {
+        Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
+
+        CategoryEntity category = categoryRepositoryDecorator.getByIdPrimary(categoryId);
+        Page<ProductEntity> productEntityPage = productRepository.findByCategory(category, pageable);
+        List<ProductEntity> productEntities = productEntityPage.getContent();
+        List<ProductOutDTO> productOutDTOs = productEntities.stream().map(productMapper::productEntityToProductOutDTO).toList();
+
+        return productMapper.toPaginatedResponse(productEntityPage, productOutDTOs);
+    }
 }
