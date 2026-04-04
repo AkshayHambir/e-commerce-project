@@ -10,6 +10,7 @@ import com.springbootlearning.ecommerceapp.mapper.CategoryMapper;
 import com.springbootlearning.ecommerceapp.repositories.CategoryRepository;
 import com.springbootlearning.ecommerceapp.repositories.decorators.CategoryRepositoryDecorator;
 import com.springbootlearning.ecommerceapp.service.CategoryService;
+import com.springbootlearning.ecommerceapp.service.validators.CategoryServiceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepositoryDecorator categoryRepositoryDecorator;
 
+    private final CategoryServiceValidator categoryServiceValidator;
+
     @Override
     public PaginatedResponse<CategoryOutDTO> getCategories(Integer pageNumber, Integer pageSize, String sortBy, String order) {
         Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -43,9 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryOutDTO createCategory(CategoryInDTO categoryInDTO) {
-        if (categoryRepository.existsByCategoryName(categoryInDTO.getCategoryName())) {
-            throw new APIException("Category with given name already exists.");
-        }
+        categoryServiceValidator.validateIfCategoryWithDuplicateNameNotPresent(categoryInDTO.getCategoryName());
 
         CategoryEntity categoryEntity = categoryMapper.categoryInDTOToCategoryEntity(categoryInDTO);
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
@@ -55,15 +56,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryOutDTO updateCategory(Long categoryId, CategoryUpdateDTO categoryUpdateDTO) {
-        CategoryEntity existingCategoryEntity = categoryRepository.findByCategoryName(categoryUpdateDTO.getCategoryName());
-
         CategoryEntity categoryEntity = categoryRepositoryDecorator.getByIdPrimary(categoryId);
 
-        if (Objects.nonNull(existingCategoryEntity) && !existingCategoryEntity.getCategoryId().equals(categoryId)) {
-            throw new APIException("Category with given name already exists");
+        if(!categoryEntity.getCategoryName().equals(categoryUpdateDTO.getCategoryName())){
+            categoryServiceValidator.validateIfCategoryWithDuplicateNameNotPresent(categoryUpdateDTO.getCategoryName());
         }
 
         categoryMapper.categoryUpdateDTOToCategoryEntity(categoryUpdateDTO, categoryEntity);
+        categoryRepository.save(categoryEntity);
         return categoryMapper.categoryEntityToCategoryOutDTO(categoryEntity);
     }
 
