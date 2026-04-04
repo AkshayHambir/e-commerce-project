@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
         Page<CategoryEntity> categoryPage = categoryRepository.findAll(pageable);
         List<CategoryEntity> categoryEntities = categoryPage.getContent();
-        List<CategoryOutDTO> categoryOutDTOs = categoryEntities.stream().map(categoryEntity -> categoryMapper.categoryEntityToCategoryOutDTO(categoryEntity)).toList();
+        List<CategoryOutDTO> categoryOutDTOs = categoryEntities.stream().map(categoryMapper::categoryEntityToCategoryOutDTO).toList();
 
         return categoryMapper.toPaginatedResponse(categoryPage, categoryOutDTOs);
     }
