@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductUpdateDTO {
     @NotBlank
-    @Size(min = 3, message = "Product description must contain at least 3 characters")
+    @Size(min = 3, message = "Product name must contain at least 3 characters")
     private String productName;
 
     @NotBlank
