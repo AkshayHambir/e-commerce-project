@@ -1,35 +1,19 @@
-package com.springbootlearning.ecommerceapp.entities;
+package com.springbootlearning.ecommerceapp.dto.product;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class ProductOutDTO {
     private Long productId;
-
     private String productName;
-
-    private String description;
-
     private int quantity;
-
     private double price;
-
     private double specialPrice;
-
     private double discount;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private CategoryEntity category;
-
+    private Long categoryId;
     private String image;
 }
