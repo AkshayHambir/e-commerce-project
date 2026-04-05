@@ -15,6 +15,8 @@ public interface ProductService {
 
     PaginatedResponse<ProductOutDTO> searchProductsByName(String productName, Integer pageNumber, Integer pageSize, String sortBy, String order);
 
+    ProductOutDTO findProductById(Long productId);
+
     ProductOutDTO updateProduct(Long categoryId, Long productId, ProductUpdateDTO productUpdateDTO);
 
     ProductOutDTO updateProductImage(Long productId, MultipartFile imageFile);

@@ -98,6 +98,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductOutDTO findProductById(Long productId) {
+        ProductEntity productEntity = productRepositoryDecorator.getByIdPrimary(productId);
+        return productMapper.productEntityToProductOutDTO(productEntity);
+    }
+
+    @Override
     public ProductOutDTO updateProduct(Long categoryId, Long productId, ProductUpdateDTO productUpdateDTO) {
         CategoryEntity categoryEntity = categoryRepositoryDecorator.getByIdPrimary(categoryId);
         ProductEntity productEntity = productRepositoryDecorator.getByIdPrimary(productId);

@@ -63,6 +63,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.searchProductsByName(keyword, pageNumber, pageSize, sortBy, order));
     }
 
+    @GetMapping("/public/products/{productId}")
+    public ResponseEntity<ProductOutDTO> findProductById(@PathVariable Long productId){
+        ProductOutDTO productOutDTO = productService.findProductById(productId);
+        return new ResponseEntity<>(productOutDTO, HttpStatus.OK);
+    }
+
     @PutMapping("/admin/categories/{categoryId}/products/{productId}")
     public ResponseEntity<ProductOutDTO> updateProduct(
             @PathVariable Long categoryId,
