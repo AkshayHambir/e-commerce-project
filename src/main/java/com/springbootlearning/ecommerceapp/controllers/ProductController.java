@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
@@ -69,6 +70,15 @@ public class ProductController {
             @RequestBody @Valid ProductUpdateDTO productUpdateDTO
     ) {
         ProductOutDTO productOutDTO = productService.updateProduct(categoryId, productId, productUpdateDTO);
+        return new ResponseEntity<>(productOutDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/admin/products/{productId}/image")
+    public ResponseEntity<ProductOutDTO> updateProductImage(
+            @PathVariable Long productId,
+            @RequestPart("image")MultipartFile file
+            ) {
+        ProductOutDTO productOutDTO = productService.updateProductImage(productId, file);
         return new ResponseEntity<>(productOutDTO, HttpStatus.OK);
     }
 }

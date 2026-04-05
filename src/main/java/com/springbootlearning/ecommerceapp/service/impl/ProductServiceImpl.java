@@ -11,20 +11,25 @@ import com.springbootlearning.ecommerceapp.repositories.CategoryRepository;
 import com.springbootlearning.ecommerceapp.repositories.ProductRepository;
 import com.springbootlearning.ecommerceapp.repositories.decorators.CategoryRepositoryDecorator;
 import com.springbootlearning.ecommerceapp.repositories.decorators.ProductRepositoryDecorator;
+import com.springbootlearning.ecommerceapp.service.FileService;
 import com.springbootlearning.ecommerceapp.service.ProductService;
 import com.springbootlearning.ecommerceapp.service.validators.ProductServiceValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+
+    private final FileService fileService;
 
     private final CategoryRepository categoryRepository;
 
@@ -37,6 +42,9 @@ public class ProductServiceImpl implements ProductService {
     private final ProductServiceValidator productServiceValidator;
 
     private final ProductMapper productMapper;
+
+    @Value("${project.product.images}")
+    private String productImageFolderPath;
 
     @Override
     public ProductOutDTO saveProduct(Long categoryId, ProductInDTO productInDTO) {
@@ -103,5 +111,19 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(productEntity);
 
         return productMapper.productEntityToProductOutDTO(productEntity);
+    }
+
+    @Override
+    public ProductOutDTO updateProductImage(Long productId, MultipartFile imageFile) {
+        ProductEntity productEntity = productRepositoryDecorator.getByIdPrimary(productId);
+
+        // upload image to server folder and get the file name of uploaded image
+        String fileName = fileService.uploadImage(productImageFolderPath, imageFile);
+
+        // Updating new file name to the product
+        productEntity.setImage(fileName);
+        ProductEntity savedProduct = productRepository.save(productEntity);
+
+        return productMapper.productEntityToProductOutDTO(savedProduct);
     }
 }
