@@ -1,5 +1,6 @@
 package com.springbootlearning.ecommerceapp.dto.product;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,9 +20,12 @@ public class ProductUpdateDTO {
     @Size(min = 3, message = "Product description must contain at least 3 characters")
     private String description;
 
+    @Min(value = 1, message = "Quantity must be at least 1")
     private int quantity;
 
+    @Min(value = 1, message = "Price must be at least 1")
     private double price;
 
+    @Min(value = 0, message = "Discount must be at least 0")
     private double discount;
 }
