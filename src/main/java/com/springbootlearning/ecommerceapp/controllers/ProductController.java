@@ -1,6 +1,5 @@
 package com.springbootlearning.ecommerceapp.controllers;
 
-import com.springbootlearning.ecommerceapp.dto.category.CategoryOutDTO;
 import com.springbootlearning.ecommerceapp.dto.product.ProductInDTO;
 import com.springbootlearning.ecommerceapp.dto.product.ProductOutDTO;
 import com.springbootlearning.ecommerceapp.dto.response.PaginatedResponse;
@@ -48,5 +47,17 @@ public class ProductController {
     )
     {
         return ResponseEntity.ok(productService.getProductsByCategory(categoryId, pageNumber, pageSize, sortBy, order));
+    }
+
+    @GetMapping("/public/products/keyword/{keyword}")
+    public ResponseEntity<PaginatedResponse<ProductOutDTO>> searchProductsByKeyword(
+            @PathVariable String keyword,
+            @RequestParam(required = false, defaultValue = "1") Integer pageNumber,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "productId") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String order
+    )
+    {
+        return ResponseEntity.ok(productService.searchProductsByName(keyword, pageNumber, pageSize, sortBy, order));
     }
 }

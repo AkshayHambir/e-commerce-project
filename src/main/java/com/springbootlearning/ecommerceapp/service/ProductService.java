@@ -10,4 +10,6 @@ public interface ProductService {
     PaginatedResponse<ProductOutDTO> getProducts(Integer pageNumber, Integer pageSize, String sortBy, String order);
 
     PaginatedResponse<ProductOutDTO> getProductsByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String order);
+
+    PaginatedResponse<ProductOutDTO> searchProductsByName(String productName, Integer pageNumber, Integer pageSize, String sortBy, String order);
 }
