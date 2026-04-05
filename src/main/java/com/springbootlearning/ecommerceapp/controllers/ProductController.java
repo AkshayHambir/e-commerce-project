@@ -2,6 +2,7 @@ package com.springbootlearning.ecommerceapp.controllers;
 
 import com.springbootlearning.ecommerceapp.dto.product.ProductInDTO;
 import com.springbootlearning.ecommerceapp.dto.product.ProductOutDTO;
+import com.springbootlearning.ecommerceapp.dto.product.ProductUpdateDTO;
 import com.springbootlearning.ecommerceapp.dto.response.PaginatedResponse;
 import com.springbootlearning.ecommerceapp.service.ProductService;
 import jakarta.validation.Valid;
@@ -59,5 +60,15 @@ public class ProductController {
     )
     {
         return ResponseEntity.ok(productService.searchProductsByName(keyword, pageNumber, pageSize, sortBy, order));
+    }
+
+    @PutMapping("/admin/categories/{categoryId}/products/{productId}")
+    public ResponseEntity<ProductOutDTO> updateProduct(
+            @PathVariable Long categoryId,
+            @PathVariable Long productId,
+            @RequestBody @Valid ProductUpdateDTO productUpdateDTO
+    ) {
+        ProductOutDTO productOutDTO = productService.updateProduct(categoryId, productId, productUpdateDTO);
+        return new ResponseEntity<>(productOutDTO, HttpStatus.OK);
     }
 }

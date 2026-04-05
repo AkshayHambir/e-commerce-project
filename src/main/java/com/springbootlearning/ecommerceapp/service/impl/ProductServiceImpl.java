@@ -2,6 +2,7 @@ package com.springbootlearning.ecommerceapp.service.impl;
 
 import com.springbootlearning.ecommerceapp.dto.product.ProductInDTO;
 import com.springbootlearning.ecommerceapp.dto.product.ProductOutDTO;
+import com.springbootlearning.ecommerceapp.dto.product.ProductUpdateDTO;
 import com.springbootlearning.ecommerceapp.dto.response.PaginatedResponse;
 import com.springbootlearning.ecommerceapp.entities.CategoryEntity;
 import com.springbootlearning.ecommerceapp.entities.ProductEntity;
@@ -86,5 +87,21 @@ public class ProductServiceImpl implements ProductService {
                                                 .toList();
 
         return productMapper.toPaginatedResponse(productEntityPage, productOutDTOs);
+    }
+
+    @Override
+    public ProductOutDTO updateProduct(Long categoryId, Long productId, ProductUpdateDTO productUpdateDTO) {
+        CategoryEntity categoryEntity = categoryRepositoryDecorator.getByIdPrimary(categoryId);
+        ProductEntity productEntity = productRepositoryDecorator.getByIdPrimary(productId);
+
+        productServiceValidator.validateIfProductBelongsToCategory(categoryEntity, productEntity);
+        if(!productEntity.getProductName().equalsIgnoreCase(productUpdateDTO.getProductName())){
+            productServiceValidator.validateNoDuplicateProductNamePresent(categoryEntity, productUpdateDTO.getProductName());
+        }
+
+        productMapper.productUpdateDTOToProductEntity(productUpdateDTO, productEntity);
+        productRepository.save(productEntity);
+
+        return productMapper.productEntityToProductOutDTO(productEntity);
     }
 }
