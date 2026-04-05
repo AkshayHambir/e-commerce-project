@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
     private String productName;

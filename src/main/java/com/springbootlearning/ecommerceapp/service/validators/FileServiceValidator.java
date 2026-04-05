@@ -25,7 +25,7 @@ public class FileServiceValidator {
         }
         String fileName = file.getOriginalFilename();
 
-        String extension = fileName.split("\\.")[1].toLowerCase();
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         if(file.isEmpty() || !(extension.equals("png") || extension.equals("jpg") || extension.equals("jpeg"))){
             throw new APIException("Not a valid image");
         }
