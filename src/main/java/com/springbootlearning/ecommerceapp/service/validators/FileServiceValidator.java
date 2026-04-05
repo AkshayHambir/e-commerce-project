@@ -12,6 +12,13 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class FileServiceValidator {
 
+    public void validateFileSize(MultipartFile file, long maxSizeInBytes){
+        if(file.getSize() > maxSizeInBytes){
+            throw new APIException("File size exceeds maximum allowed size");
+        }
+    }
+
+
     public void validateIfImageIsValid(MultipartFile file){
         if(Objects.isNull(file) || Objects.isNull(file.getOriginalFilename())){
             throw new APIException("Invalid file");
