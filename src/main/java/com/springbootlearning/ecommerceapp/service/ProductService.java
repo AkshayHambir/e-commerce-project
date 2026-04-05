@@ -20,4 +20,6 @@ public interface ProductService {
     ProductOutDTO updateProduct(Long categoryId, Long productId, ProductUpdateDTO productUpdateDTO);
 
     ProductOutDTO updateProductImage(Long productId, MultipartFile imageFile);
+
+    void deleteProduct(Long productId);
 }

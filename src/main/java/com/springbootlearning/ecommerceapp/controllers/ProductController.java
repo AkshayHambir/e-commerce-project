@@ -87,4 +87,10 @@ public class ProductController {
         ProductOutDTO productOutDTO = productService.updateProductImage(productId, file);
         return new ResponseEntity<>(productOutDTO, HttpStatus.OK);
     }
+
+    @DeleteMapping("/admin/products/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

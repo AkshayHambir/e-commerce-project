@@ -132,4 +132,17 @@ public class ProductServiceImpl implements ProductService {
 
         return productMapper.productEntityToProductOutDTO(savedProduct);
     }
+
+    @Override
+    public void deleteProduct(Long productId) {
+        ProductEntity productEntity = productRepositoryDecorator.getByIdPrimary(productId);
+
+        // Delete the image file if it exists
+        if (productEntity.getImage() != null && !productEntity.getImage().isEmpty()) {
+            fileService.deleteImage(productImageFolderPath, productEntity.getImage());
+        }
+
+        // Delete the product from database
+        productRepository.delete(productEntity);
+    }
 }

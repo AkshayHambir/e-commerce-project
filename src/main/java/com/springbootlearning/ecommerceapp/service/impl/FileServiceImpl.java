@@ -61,4 +61,26 @@ public class FileServiceImpl implements FileService {
         }
         return fileName;
     }
+
+    @Override
+    public void deleteImage(String path, String fileName) {
+        try {
+            String filePath = path + File.separator + fileName;
+            File file = new File(filePath);
+
+            if (file.exists()) {
+                if (file.delete()) {
+                    log.info("Image file deleted successfully: {}", fileName);
+                } else {
+                    log.warn("Failed to delete image file: {}", fileName);
+                    throw new APIException("Failed to delete image file: " + fileName);
+                }
+            } else {
+                log.warn("Image file not found: {}", fileName);
+            }
+        } catch (Exception e) {
+            log.error("Error occurred while deleting image: {}", e);
+            throw new APIException("Error occurred while deleting image: " + e.getMessage());
+        }
+    }
 }
