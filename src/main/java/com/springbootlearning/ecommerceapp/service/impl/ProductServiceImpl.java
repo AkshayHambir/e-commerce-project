@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductOutDTO saveProduct(Long categoryId, ProductInDTO productInDTO) {
         CategoryEntity category = categoryRepositoryDecorator.getByIdPrimary(categoryId);
-        productServiceValidator.validateNoDuplicateProductNamePresent(productInDTO.getProductName());
+        productServiceValidator.validateNoDuplicateProductNamePresent(category, productInDTO.getProductName());
 
         ProductEntity productEntity = productMapper.productInDTOToProductEntity(productInDTO, category);
         ProductEntity savedProductEntity = productRepository.save(productEntity);
