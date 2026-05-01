@@ -31,5 +31,9 @@ public class ProductEntity {
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private UserEntity user;
+
     private String image;
 }
