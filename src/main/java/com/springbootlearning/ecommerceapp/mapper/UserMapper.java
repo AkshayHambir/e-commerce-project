@@ -1,6 +1,7 @@
 package com.springbootlearning.ecommerceapp.mapper;
 
 import com.springbootlearning.ecommerceapp.dto.auth.SignupRequestDTO;
+import com.springbootlearning.ecommerceapp.dto.user.UserOutDTO;
 import com.springbootlearning.ecommerceapp.entities.Role;
 import com.springbootlearning.ecommerceapp.entities.UserEntity;
 import org.mapstruct.Mapper;
@@ -19,4 +20,6 @@ public interface UserMapper {
     @Mapping(target = "products", ignore = true)
     @Mapping(target = "addresses", ignore = true)
     UserEntity toEntity(SignupRequestDTO signupRequestDTO, String encodedPassword, Set<Role> roles);
+
+    UserOutDTO toUserOutDTO(UserEntity userEntity);
 }
