@@ -9,6 +9,8 @@ import com.springbootlearning.ecommerceapp.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
@@ -21,5 +23,11 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleMapper.toEntity(roleInDTO);
         Role savedRole = rolesRepository.save(role);
         return roleMapper.toOutDTO(savedRole);
+    }
+
+    @Override
+    public List<RoleOutDTO> getAllRoles() {
+        List<Role> roles = rolesRepository.findAll();
+       return roles.stream().map(roleMapper::toOutDTO).toList();
     }
 }

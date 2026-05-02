@@ -6,9 +6,9 @@ import com.springbootlearning.ecommerceapp.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -17,7 +17,13 @@ public class RolesController {
 
     private final RoleService roleService;
 
+    @PostMapping("/admin/roles")
     public ResponseEntity<RoleOutDTO> createRole(@Valid @RequestBody RoleInDTO roleInDTO) {
         return ResponseEntity.ok(roleService.createRole(roleInDTO));
+    }
+
+    @GetMapping("/admin/roles")
+    public ResponseEntity<List<RoleOutDTO>> getAllRoles() {
+        return ResponseEntity.ok(roleService.getAllRoles());
     }
 }
