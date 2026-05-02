@@ -11,7 +11,7 @@ import java.util.Set;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "user_id", ignore = true)
+    @Mapping(target = "userId", ignore = true)
     @Mapping(target = "roles", source = "roles")
     @Mapping(target = "password", source = "encodedPassword")
     @Mapping(target = "username", source = "signupRequestDTO.username")

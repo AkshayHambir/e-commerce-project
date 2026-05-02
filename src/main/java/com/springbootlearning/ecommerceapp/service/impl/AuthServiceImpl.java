@@ -17,6 +17,7 @@ import com.springbootlearning.ecommerceapp.security.services.UserDetailsImpl;
 import com.springbootlearning.ecommerceapp.service.AuthService;
 import com.springbootlearning.ecommerceapp.service.validators.AuthServiceValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
@@ -72,6 +74,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public MessageResponse registerUser(SignupRequestDTO signupRequestDTO) {
+        log.info("userDTO: {}", signupRequestDTO);
         authServiceValidator.validateIfUserWithUsernameAlreadyExists(signupRequestDTO.getUsername());
         authServiceValidator.validateIfUserWithEmailAlreadyExists(signupRequestDTO.getEmail());
 

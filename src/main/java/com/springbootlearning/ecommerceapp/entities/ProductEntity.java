@@ -31,9 +31,9 @@ public class ProductEntity {
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
-    private UserEntity user;
+    private UserEntity seller;
 
     private String image;
 }
