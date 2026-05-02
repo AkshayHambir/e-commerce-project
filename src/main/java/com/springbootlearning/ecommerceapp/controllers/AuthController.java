@@ -1,7 +1,9 @@
 package com.springbootlearning.ecommerceapp.controllers;
 
 import com.springbootlearning.ecommerceapp.dto.auth.LoginRequestDTO;
+import com.springbootlearning.ecommerceapp.dto.auth.SignupRequestDTO;
 import com.springbootlearning.ecommerceapp.dto.auth.UserInfoResponse;
+import com.springbootlearning.ecommerceapp.dto.response.MessageResponse;
 import com.springbootlearning.ecommerceapp.security.jwt.JwtUtils;
 import com.springbootlearning.ecommerceapp.service.AuthService;
 import jakarta.validation.Valid;
@@ -25,5 +27,11 @@ public class AuthController {
     public ResponseEntity<UserInfoResponse> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequestDTO){
         UserInfoResponse userInfoResponse = authService.authenticateUser(loginRequestDTO);
         return ResponseEntity.ok(userInfoResponse);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequestDTO signupRequestDTO){
+        MessageResponse messageResponse = authService.registerUser(signupRequestDTO);
+        return ResponseEntity.ok(messageResponse);
     }
 }
