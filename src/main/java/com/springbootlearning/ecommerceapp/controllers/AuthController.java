@@ -8,13 +8,10 @@ import com.springbootlearning.ecommerceapp.security.jwt.JwtUtils;
 import com.springbootlearning.ecommerceapp.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,5 +30,11 @@ public class AuthController {
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequestDTO signupRequestDTO){
         MessageResponse messageResponse = authService.registerUser(signupRequestDTO);
         return ResponseEntity.ok(messageResponse);
+    }
+
+    @GetMapping("/currentUserInfo")
+    public ResponseEntity<UserInfoResponse> getCurrentUserInfo(){
+        UserInfoResponse userInfoResponse = authService.getCurrentUserInfo();
+        return ResponseEntity.ok(userInfoResponse);
     }
 }

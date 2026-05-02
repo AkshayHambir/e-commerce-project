@@ -88,6 +88,14 @@ public class AuthServiceImpl implements AuthService {
         return new MessageResponse("User registered successfully!");
     }
 
+    @Override
+    public UserInfoResponse getCurrentUserInfo() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        return authMapper.toUserInfoResponse(userDetails, null, roles);
+    }
+
     private Set<Role> getRoles(Set<String> strRoles) {
         Set<Role> roles = new HashSet<>();
 
