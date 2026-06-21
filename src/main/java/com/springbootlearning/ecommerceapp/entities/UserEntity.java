@@ -48,6 +48,10 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List<AddressEntity> addresses;
 
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private CartEntity cart;
+
     public UserEntity(String username, String password, String email) {
         this.username = username;
         this.password = password;
